@@ -21,43 +21,25 @@
 }:
 with lib;
 with lib.${namespace};
-let cfg = config.${namespace}.suites.common;
+let cfg = config.${namespace}.security.u2f;
 in
 {
-    options.${namespace}.suites.common = with types; {
-        enable = mkBoolOpt false "Whether or not to enable common configuration.";
+    options.${namespace}.security.u2f = with types; {
+        enable = mkBoolOpt false "Whether or not to allow login with a U2F/FIDO2 token.";
     };
 
     config = mkIf cfg.enable {
+        # Enable login with U2F/FIDO2 token
+        security.pam.u2f = {
+            enable = true;
+            origin = "pam://molier.net";
+            control = "sufficient";
+            cue = true;
+        };
 
-        nixdots = {
-            nix = enabled;
-
-            tools = {
-                git = enabled;
-            };
-
-            hardware = {
-                audio = enabled;
-                networking = enabled;
-            };
-
-            services = {
-                printing = enabled;
-                openssh = enabled;
-            };
-
-            security = {
-                gpg = enabled;
-                u2f = enabled;
-            };
-
-            system = {
-                boot = enabled;
-                locale = enabled;
-                xkb = enabled;
-                time = enabled;
-            };
+        security.pam.services = {
+            login.u2fAuth = true;
+            sudo.u2fAuth = true;
         };
     };
 }
