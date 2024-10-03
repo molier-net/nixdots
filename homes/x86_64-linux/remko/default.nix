@@ -21,5 +21,11 @@
 }:
 with lib.${namespace};
 {
-        
+    home.file = {
+        ".config/Yubico/u2f_keys".text = ''
+            remko:*,z0XJK34h5cWkrhX7/xSnhzqCwN8Mz33+yXSTVLRs/pdIAmCciLosREm8rTuzhzf1cAqFrO8XExEjXphMLeDrNA==,es256,+presence+pin
+            remko:*,BpHmLhso1VcYGXqdcKlbfK7n8pqylgt+YcUcksWibG6z9H5ayrIw2fYGsBzffYtUDXSWGkjHutnUmQ+FAmphLg==,es256,+presence+pin
+            '';
+    };
+    
 }
